@@ -23,35 +23,45 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-  return res.send(JSON.stringify(books,null,4));
+public_users.get('/', (req, res) => {
+    new Promise((resolve, reject) => {
+        console.log("Starting Book List Request");
+        const booklist = JSON.stringify(books,null,4);
+        resolve(res.send(booklist));
+    })
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
-    let isbn = parseInt(req.params.isbn)
-    return res.send(books[isbn]);
+    new Promise((resolve,reject) => {
+        console.log("Starting ISBN Request");
+        let isbn = parseInt(req.params.isbn);
+        resolve(res.send(books[isbn]));
+    })
 });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-    let author = req.params.author
-    Object.keys(books).forEach(key => {
-        let details = books[key];
-        if (details["author"] === author) {
-            res.send(details)
-        }
+    new Promise((resolve,reject) => {
+        let author = req.params.author
+        Object.keys(books).forEach(key => {
+            let details = books[key];
+            if (details["author"] === author) {
+                resolve(res.send(details))
+            }
     })
-});
+})});
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-    let title = req.params.title
+    new Promise((resolve,reject) => {
+        let title = req.params.title
     Object.keys(books).forEach(key => {
         let details = books[key];
         if (details["title"] === title) {
-            res.send(details)
+            resolve(res.send(details))
         }
+    })
     })
 });
 
