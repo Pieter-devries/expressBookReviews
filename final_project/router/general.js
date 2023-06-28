@@ -7,7 +7,19 @@ const public_users = express.Router();
 
 public_users.post("/register", (req,res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  username = req.body.username;
+  password = req.body.password;
+  if (username && password) {
+    
+  } else {
+      return res.status(401).json({message: "Both username and password must be sent"});
+  }
+  if (isValid(username)) {
+    users.push({"username":username,"password":password});
+    return res.status(200).json({message: "User successfully registred. Now you can login"});
+  } else {
+    return res.status(208).json({message: "Already registered username, choose another"});
+  }
 });
 
 // Get the book list available in the shop
@@ -30,26 +42,23 @@ public_users.get('/author/:author',function (req, res) {
             res.send(details)
         }
     })
-    // for (const [book,details] of Object.entries(books)) {
-    //     // return console.log(`${book},${details["author"]}`)
-    //     if (details["author"] === author) {
-    //         return res.send(details);
-    //     } else {
-    //         return res.send("Nope")
-    //     }
-    // }
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    let title = req.params.title
+    Object.keys(books).forEach(key => {
+        let details = books[key];
+        if (details["title"] === title) {
+            res.send(details)
+        }
+    })
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    let isbn = parseInt(req.params.isbn)
+    return res.send(books[isbn]["reviews"]);
 });
 
 module.exports.general = public_users;
